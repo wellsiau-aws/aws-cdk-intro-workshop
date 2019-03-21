@@ -50,6 +50,7 @@ export class DeployStackAction extends codebuild.PipelineBuildAction {
         phases: {
           install: {
             commands: [
+              `find .`,
               `npx npm@latest ci`
             ]
           },
