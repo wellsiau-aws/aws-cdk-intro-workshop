@@ -78,7 +78,12 @@ export interface DeployStackActionProps {
   stack: Stack;
 
   /**
-   * Grants administrator permissions to the action.
+   * Grant administrator permissions to the deployment action. This is likely to
+   * be needed in order to deploy arbitrary infrastructure into your account.
+   *
+   * You can also grant specific permissions to the execution role through
+   * `addToRolePolicy` or by using a grant method on a resource and referencing
+   * the `role`.
    */
   admin: boolean;
 }
@@ -158,6 +163,8 @@ export class DeployStackAction extends codepipeline_api.Action {
         }
       }
     });
+
+    this.addInputArtifact(source.outputArtifact);
 
     this._project = project;
 
