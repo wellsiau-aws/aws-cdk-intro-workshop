@@ -1,9 +1,11 @@
-import cdk = require('@aws-cdk/cdk');
-import lambda = require('@aws-cdk/aws-lambda');
 import dynamodb = require('@aws-cdk/aws-dynamodb');
+import lambda = require('@aws-cdk/aws-lambda');
+import cdk = require('@aws-cdk/cdk');
 
 export interface HitCounterProps {
-  /** the function for which we want to count url hits **/
+  /**
+   * The function for which we want to count url hits
+   */
   downstream: lambda.IFunction;
 }
 
