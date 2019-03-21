@@ -7,7 +7,7 @@ const app = new cdk.App();
 
 const workshopStack = new CdkWorkshopStack(app, 'CdkWorkshopStack');
 
-new WorkshopPipeline(app, 'Pipeline', {
+new WorkshopPipeline(app, 'WorkshopPipeline', {
   workshopStack
 });
 
