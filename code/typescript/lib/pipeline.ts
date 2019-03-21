@@ -1,6 +1,5 @@
-import codepipeline = require('@aws-cdk/aws-codepipeline');
 import { App, Stack, StackProps } from '@aws-cdk/cdk';
-import { BootstrapPipelineSource, DeployStackAction } from './bootstrap';
+import { DeployStackAction, ApplicationPipeline } from './bootstrap';
 import { CdkWorkshopStack } from './workshop-stack';
 import sns = require('@aws-cdk/aws-sns');
 
@@ -12,25 +11,19 @@ export class WorkshopPipeline extends Stack {
   constructor(app: App, id: string, props: WorkshopPipelineProps) {
     super(app, id, props);
 
-    const source = new BootstrapPipelineSource(this, 'Source', {
-      pipeline: 'cdk-workshop'
-    });
-
     const deploy = new DeployStackAction(this, 'DeployWorkshop', {
-      source,
       stack: props.workshopStack,
       admin: true
     });
 
     const deployStack2 = new DeployStackAction(this, 'DeployRandomStack', {
-      source,
       stack: new RandomStack(app, 'RandomStack'),
       admin: true
     });
 
-    new codepipeline.Pipeline(this, 'Pipeline', {
+    new ApplicationPipeline(this, 'Pipeline', {
+      pipeline: 'cdk-workshop',
       stages: [
-        { name: 'Source', actions: [ source ] },
         { name: 'DeployWorkshop', actions: [ deploy, deployStack2 ] }
       ]
     });
