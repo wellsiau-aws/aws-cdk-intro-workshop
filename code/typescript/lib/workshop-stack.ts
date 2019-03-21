@@ -24,9 +24,9 @@ export class CdkWorkshopStack extends cdk.Stack {
       handler: helloWithCounter.handler
     });
 
-    new TableViewer(this, 'ViewHitCounter', {
+    new TableViewer(this as any, 'ViewHitCounter', {
       title: 'Hello Hits',
-      table: helloWithCounter.table,
+      table: helloWithCounter.table as any,
       sortBy: '-hits'
     });
   }

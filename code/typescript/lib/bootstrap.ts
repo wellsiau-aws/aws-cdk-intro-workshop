@@ -13,9 +13,9 @@ export class BootstrapPipelineSource extends s3.PipelineSourceAction {
     const exportPrefix = `cdk-pipeline:${props.pipeline}`;
 
     const attributes: BootstrapPipelineAttributes = {
-      bucketName: Fn.importValue(`${exportPrefix}-bucket`);
-      objectKey: Fn.importValue(`${exportPrefix}-object-key`);
-      toolkitVersion: Fn.importValue(`${exportPrefix}-toolkit-version`);
+      bucketName: Fn.importValue(`${exportPrefix}-bucket`),
+      objectKey: Fn.importValue(`${exportPrefix}-object-key`),
+      toolkitVersion: Fn.importValue(`${exportPrefix}-toolkit-version`),
     };
 
     const bucket = s3.Bucket.import(scope, `${id}/Bucket`, { bucketName: attributes.bucketName });

@@ -12,8 +12,8 @@
         "cdk": "cdk"
     },
     "devDependencies": {
-        "@types/node": "^10.12.18",
-        "typescript": "^3.2.2",
+        "@types/node": "^11.11.4",
+        "typescript": "^3.3.4000",
         "aws-cdk": "^0.26.0"
     },
     "dependencies": {
@@ -23,6 +23,6 @@
         "@aws-cdk/aws-sns": "^0.26.0",
         "@aws-cdk/aws-sqs": "^0.26.0",
         "@aws-cdk/cdk": "^0.26.0",
-        "cdk-dynamo-table-viewer": "^0.1.12"
+        "cdk-dynamo-table-viewer": "^1.0.2"
     }
 }
