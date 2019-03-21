@@ -17,7 +17,8 @@ export class WorkshopPipeline extends Stack {
 
     const deploy = new DeployStackAction(this, 'DeployWorkshop', {
       source,
-      stack: props.workshopStack
+      stack: props.workshopStack,
+      admin: true
     });
 
     new codepipeline.Pipeline(this, 'Pipeline', {

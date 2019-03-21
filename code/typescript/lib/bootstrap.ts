@@ -1,4 +1,5 @@
 import codebuild = require('@aws-cdk/aws-codebuild');
+import iam = require('@aws-cdk/aws-iam');
 import s3 = require('@aws-cdk/aws-s3');
 import { Construct, Fn, Stack } from '@aws-cdk/cdk';
 
@@ -31,11 +32,25 @@ export class BootstrapPipelineSource extends s3.PipelineSourceAction {
 }
 
 export interface DeployStackActionProps {
+  /**
+   * The stack to deploy
+   */
   stack: Stack;
+
+  /**
+   * The bootstrap pipeline's source.
+   */
   source: BootstrapPipelineSource;
+
+  /**
+   * Grants administrator permissions to the action.
+   */
+  admin: boolean;
 }
 
 export class DeployStackAction extends codebuild.PipelineBuildAction {
+  private readonly project: codebuild.PipelineProject;
+
   constructor(scope: Construct, id: string, props: DeployStackActionProps) {
     const group = new Construct(scope, id);
     const version = props.source.pipelineAttributes.toolkitVersion;
@@ -50,7 +65,6 @@ export class DeployStackAction extends codebuild.PipelineBuildAction {
         phases: {
           install: {
             commands: [
-              `find .`,
               `npx npm@latest ci`
             ]
           },
@@ -68,6 +82,18 @@ export class DeployStackAction extends codebuild.PipelineBuildAction {
       project,
       inputArtifact: props.source.outputArtifact,
     });
+
+    this.project = project;
+
+    if (props.admin) {
+      this.addToRolePolicy(new iam.PolicyStatement()
+        .addAllResources()
+        .addAction('*'));
+    }
+  }
+
+  public addToRolePolicy(statement: iam.PolicyStatement) {
+    this.project.addToRolePolicy(statement);
   }
 }
 
