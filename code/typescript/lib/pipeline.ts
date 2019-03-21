@@ -11,20 +11,16 @@ export class WorkshopPipeline extends Stack {
   constructor(app: App, id: string, props: WorkshopPipelineProps) {
     super(app, id, props);
 
-    const deploy = new DeployStackAction(this, 'DeployWorkshop', {
-      stack: props.workshopStack,
-      admin: true
-    });
-
-    const deployStack2 = new DeployStackAction(this, 'DeployRandomStack', {
-      stack: new RandomStack(app, 'RandomStack'),
-      admin: true
-    });
-
     new ApplicationPipeline(this, 'Pipeline', {
-      pipeline: 'cdk-workshop',
+      bootstrap: 'cdk-workshop',
       stages: [
-        { name: 'DeployWorkshop', actions: [ deploy, deployStack2 ] }
+        {
+          name: 'DeployWorkshop',
+          actions: [
+            new DeployStackAction({ stack: props.workshopStack, admin: true }),
+            new DeployStackAction({ stack: new RandomStack(app, 'RandomStack'), admin: true })
+          ]
+        }
       ]
     });
   }
